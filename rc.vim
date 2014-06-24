@@ -29,7 +29,7 @@ Bundle 'alfredodeza/chapa.vim'
 Bundle 'msanders/snipmate.vim'
 Bundle 'jlanzarotta/bufexplorer'
 Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-session'
+" Bundle 'xolox/vim-session'
 Bundle 'kien/ctrlp.vim'
 Bundle 'kchmck/vim-coffee-script'
 
