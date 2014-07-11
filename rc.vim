@@ -33,8 +33,9 @@ Bundle 'jlanzarotta/bufexplorer'
 Bundle 'kien/ctrlp.vim'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'plasticboy/vim-markdown'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'bling/vim-airline'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'bling/vim-airline'
+Bundle 'tpope/vim-fugitive'
 
 call vundle#end()
 filetype plugin indent on
@@ -155,6 +156,7 @@ set modelines=1
 
 let mapleader = ","
 
+set ttimeoutlen=50
 
 " Functions
 " ==========
