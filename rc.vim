@@ -4,9 +4,9 @@
 " Setup
 " ======
 
-set nocompatible                           " enable vim features
+set nocompatible " enable vim features
 filetype off
-set backup                                 " make backup file and leave it around 
+set backup " make backup file and leave it around
 set backupskip+=svn-commit.tmp,svn-commit.[0-9]*.tmp
 set directory=/var/tmp,/tmp                         " where to put swap file
 set backupdir=~/.vim/backups
@@ -19,7 +19,7 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
 
 Bundle 'gmarik/vundle'
-Bundle 'altercation/vim-colors-solarized'
+Bundle 'volkhin/vim-colors-solarized'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'vim-scripts/taglist.vim'
@@ -28,10 +28,13 @@ Bundle 'tpope/vim-haml'
 Bundle 'alfredodeza/chapa.vim'
 Bundle 'msanders/snipmate.vim'
 Bundle 'jlanzarotta/bufexplorer'
-Bundle 'xolox/vim-misc'
+" Bundle 'xolox/vim-misc'
 " Bundle 'xolox/vim-session'
 Bundle 'kien/ctrlp.vim'
 Bundle 'kchmck/vim-coffee-script'
+Bundle 'plasticboy/vim-markdown'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'bling/vim-airline'
 
 call vundle#end()
 filetype plugin indent on
@@ -62,6 +65,7 @@ set sidescrolloff=8
 set nosplitbelow            " open new window bellow
 set number
 set numberwidth=1       " Keep line numbers small if it's shown
+set laststatus=2
 
 " Tab options
 set autoindent              " copy indent from previous line
@@ -199,7 +203,7 @@ fun! rc#RGrep()
         return
     endif
 
-    let filepattern = input("Search in files matching pattern: ", "*.*") 
+    let filepattern = input("Search in files matching pattern: ", "*.*")
     if filepattern == ""
         return
     endif
@@ -273,13 +277,13 @@ if has("autocmd")
 
         " New file templates
         "au BufNewFile *.* 0r $HOME/.vim/templates/%:e.tpl " TODO: what is %:e ?
-        au BufNewFile *.py 0r $HOME/.vim/templates/py.tpl 
+        au BufNewFile *.py 0r $HOME/.vim/templates/py.tpl
 
         " Restore cursor position
         au BufReadPost * if line("'\"") <= line("$") | exe line("'\"") | endif
 
         " Save current open file when window focus is lost
-        au FocusLost * call rc#SaveBuffer()   
+        au FocusLost * call rc#SaveBuffer()
 
         " cwindow height
         au FileType qf call AdjustWindowHeight(3, 6)
@@ -338,6 +342,8 @@ let g:ctrlp_custom_ignore = 'node_modules'
 " let snippets_dir = substitute(globpath(&rtp, 'snippets/'), "\n", ',', 'g')
 let snippets_dir = "~/.vim/snippets"
 
+" Markdown
+let g:vim_markdown_initial_foldlevel=3
 
 " Hot keys
 " ==========
@@ -467,7 +473,7 @@ call rc#Toggle_option("<F7>", "wrap")      " Переключение перен
 call rc#Map_ex_cmd("<C-F10>", "qall")
 call rc#Map_ex_cmd("<S-F10>", "qall!")
 
-" Список регистров 
+" Список регистров
 " call rc#Map_ex_cmd("<F11>", "reg")
 
 " Список меток
