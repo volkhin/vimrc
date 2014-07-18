@@ -8,7 +8,10 @@ set nocompatible " enable vim features
 filetype off
 set backup " make backup file and leave it around
 set backupskip+=svn-commit.tmp,svn-commit.[0-9]*.tmp
-set directory=/var/tmp,/tmp                         " where to put swap file
+set directory=~/.vim/swap " where to put swap file
+if finddir(&directory) == ''
+    silent call mkdir(&directory, "p")
+end
 set backupdir=~/.vim/backups
 if finddir(&backupdir) == ''
     silent call mkdir(&backupdir, "p")
@@ -36,6 +39,8 @@ Bundle 'plasticboy/vim-markdown'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
+" Bundle 'scrooloose/syntastic'
+" Bundle 'Lokaltog/vim-powerline'
 
 call vundle#end()
 filetype plugin indent on
@@ -67,6 +72,7 @@ set nosplitbelow            " open new window bellow
 set number
 set numberwidth=1       " Keep line numbers small if it's shown
 set laststatus=2
+set nostartofline
 
 " Tab options
 set autoindent              " copy indent from previous line
@@ -101,7 +107,7 @@ set keymap=russian-jcukenwin " Переключение раскладок кл�
 set iminsert=0               " Раскладка по умолчанию - английская
 set imsearch=0               " Раскладка по умолчанию при поиске - английская
 set spelllang=en,ru          " Языки для проверки правописания
-set encoding=utf-8
+set encoding=utf-8 nobomb
 set fileencodings=utf-8,cp1251,koi8-r,cp866
 set termencoding=utf-8
 
@@ -285,7 +291,7 @@ if has("autocmd")
         au BufReadPost * if line("'\"") <= line("$") | exe line("'\"") | endif
 
         " Save current open file when window focus is lost
-        au FocusLost * call rc#SaveBuffer()
+        au FocusLost * silent! :wa
 
         " cwindow height
         au FileType qf call AdjustWindowHeight(3, 6)
@@ -391,19 +397,6 @@ nnoremap <silent> ,mm :!make<CR>
 " Run
 nnoremap <silent> ,r :!%<CR>
 
-" Window commands
-nnoremap <silent> ,h :wincmd h<CR>
-nnoremap <silent> ,j :wincmd j<CR>
-nnoremap <silent> ,k :wincmd k<CR>
-nnoremap <silent> ,l :wincmd l<CR>
-nnoremap <silent> ,+ :wincmd +<CR>
-nnoremap <silent> ,- :wincmd -<CR>
-nnoremap <silent> ,cj :wincmd j<CR>:close<CR>
-nnoremap <silent> ,ck :wincmd k<CR>:close<CR>
-nnoremap <silent> ,ch :wincmd h<CR>:close<CR>
-nnoremap <silent> ,cl :wincmd l<CR>:close<CR>
-nnoremap <silent> ,cw :close<CR>
-
 " Buffer commands
 noremap <silent> ,bp :bp<CR>
 noremap <silent> ,bn :bn<CR>
@@ -420,43 +413,13 @@ nmap <silent> ,gw :call rc#RGrep()<CR>
 " Open new tab
 nmap <leader>tt <esc>:tabnew<cr>
 
-" Tab navigation
-nmap <leader>1 1gt
-nmap <leader>2 2gt
-nmap <leader>3 3gt
-nmap <leader>4 4gt
-nmap <leader>5 5gt
-nmap <leader>6 6gt
-nmap <leader>7 7gt
-nmap <leader>8 8gt
-nmap <leader>9 9gt
-
-" первая вкладка
-call rc#Map_ex_cmd("<A-UP>", ":tabfirst")
-" последняя вкладка
-call rc#Map_ex_cmd("<A-DOWN>", ":tablast")
-" переместить вкладку в начало
-nmap Q :tabmove 0<cr>
-" переместить вкладку в конец
-call rc#Map_ex_cmd("<C-DOWN>", ":tabmove")
-
-" Переключение раскладок будет производиться по <C-F>
-" cmap <silent> <C-F> <C-^>
-" imap <silent> <C-F> <C-^>X<Esc>:call rc#KeyMapHighlight()<CR>a<C-H>
-" nmap <silent> <C-F> a<C-^><Esc>:call rc#KeyMapHighlight()<CR>
-" vmap <silent> <C-F> <Esc>a<C-^><Esc::call rc#KeyMapHighlight()<CR>gv
-
 " NERDTree keys
 call rc#Map_ex_cmd("<F2>", "BufExplorer")
 call rc#Map_ex_cmd("<F3>", "NERDTreeToggle")
 nnoremap <silent> <leader>f :NERDTreeFind<CR>
 
-" Toggle cwindow
 " call rc#Map_ex_cmd("<F2>", "cw")
-
-" Запуск/сокрытие плагина Tlist
 call rc#Map_ex_cmd("<F4>", "TlistToggle")
-
 call rc#Toggle_option("<F6>", "list")      " Переключение подсветки невидимых символов
 call rc#Toggle_option("<F7>", "wrap")      " Переключение переноса слов
 
@@ -474,12 +437,6 @@ call rc#Toggle_option("<F7>", "wrap")      " Переключение перен
 " Закрытие файла
 call rc#Map_ex_cmd("<C-F10>", "qall")
 call rc#Map_ex_cmd("<S-F10>", "qall!")
-
-" Список регистров
-" call rc#Map_ex_cmd("<F11>", "reg")
-
-" Список меток
-" call rc#Map_ex_cmd("<F12>", "marks")
 
 " Project settings
 " ================
