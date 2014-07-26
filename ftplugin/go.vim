@@ -1,0 +1,7 @@
+" nmap <buffer> <Leader>r <Plug>(go-run)
+" nmap <buffer> <Leader>b <Plug>(go-build)
+" nmap <buffer> <Leader>t <Plug>(go-test)
+" nmap <buffer> <Leader>i <Plug>(go-info)
+" nmap <buffer> <Leader>gd <Plug>(go-doc)
+" nmap <buffer> <Leader>gv <Plug>(go-doc-vertical)
+" nmap <buffer> <Leader>gb <Plug>(go-doc-browser)

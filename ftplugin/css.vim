@@ -1,18 +1,5 @@
 """ main config for all programming languages
 
-setlocal nowrap
-setlocal number
-
-" Complete option
-setlocal complete=""
-setlocal complete+=.
-setlocal complete+=k
-setlocal complete+=b
-setlocal completeopt-=preview
-setlocal completeopt+=longest
-setlocal tabstop=4
-setlocal softtabstop=4
-
 setlocal foldmethod=marker
 setlocal foldlevel=2
 setlocal foldmarker={,}
