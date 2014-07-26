@@ -17,6 +17,8 @@ if finddir(&backupdir) == ''
     silent call mkdir(&backupdir, "p")
 end
 
+let mapleader = ","
+
 " init Vundle
 set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
@@ -41,6 +43,10 @@ Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
 " Bundle 'scrooloose/syntastic'
 " Bundle 'Lokaltog/vim-powerline'
+Bundle 'fatih/vim-go'
+Bundle 'Shougo/neosnippet.vim'
+Bundle 'Shougo/neocomplete.vim'
+Bundle 'Shougo/neosnippet-snippets'
 
 call vundle#end()
 filetype plugin indent on
@@ -56,7 +62,7 @@ set hidden                  " hide buffers when they are abandoned
 set autoread                " auto reload changed files
 set autowrite               " automatically save before commands like :next and :make
 
-" Display options
+" Djjkljsplay options
 set title                   " show file name in window title
 set visualbell              " mute error bell
 set listchars=tab:⇥\ ,trail:·,extends:⋯,precedes:⋯,eol:$,nbsp:~
@@ -153,14 +159,13 @@ set ttyfast
 set mousehide
 
 " Autocomplete
-set completeopt=menu
+set complete=".,k,b"
+set completeopt=menu,longest
 set infercase
 
 set whichwrap=b,s,<,>,[,],l,h
 
 set modelines=1
-
-let mapleader = ","
 
 set ttimeoutlen=50
 
@@ -296,6 +301,22 @@ if has("autocmd")
         " cwindow height
         au FileType qf call AdjustWindowHeight(3, 6)
     augroup END
+
+    augroup vimGo
+        au FileType go nmap <Leader>i <Plug>(go-info)
+        au FileType go nmap <Leader>gd <Plug>(go-doc)
+        au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+        au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+        au FileType go nmap <leader>r <Plug>(go-run)
+        au FileType go nmap <leader>b <Plug>(go-build)
+        au FileType go nmap <leader>t <Plug>(go-test)
+        au FileType go nmap <leader>r <Plug>(go-run)
+        au FileType go nmap <leader>b <Plug>(go-build)
+        au FileType go nmap <leader>t <Plug>(go-test)
+        au FileType go nmap <Leader>ds <Plug>(go-def-split)
+        au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+        au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+    augroup END
 endif
 
 
@@ -363,6 +384,28 @@ let g:vim_markdown_initial_foldlevel=3
 inoremap <Nul> <C-R>=rc#AddWrapper()<CR>
 inoremap <A-Space> <C-R>=rc#AddWrapper()<CR>
 
+" Neosnippets
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+" vim-go
+let g:go_snippet_engine = "neosnippet"
+
 " Normal mode
 " ------------
 
@@ -393,9 +436,6 @@ nnoremap <silent> ,pp :cwindow<CR>:cp<CR>
 
 " Make
 nnoremap <silent> ,mm :!make<CR>
-
-" Run
-nnoremap <silent> ,r :!%<CR>
 
 " Buffer commands
 noremap <silent> ,bp :bp<CR>
@@ -434,7 +474,7 @@ call rc#Toggle_option("<F7>", "wrap")      " Переключение перен
 " menu G.Log :Glog<CR>
 " menu G.Blame :Gblame<CR>
 
-" Закрытие файла
+" Close files
 call rc#Map_ex_cmd("<C-F10>", "qall")
 call rc#Map_ex_cmd("<S-F10>", "qall!")
 
