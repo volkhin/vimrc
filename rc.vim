@@ -372,7 +372,7 @@ let g:ctrlp_custom_ignore = 'node_modules'
 let snippets_dir = "~/.vim/snippets"
 
 " Markdown
-let g:vim_markdown_initial_foldlevel=3
+let g:vim_markdown_initial_foldlevel=10
 
 " Hot keys
 " ==========
