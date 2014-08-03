@@ -1,4 +1,3 @@
-" stolen from somebody
 " Artem Volkhin, http://volkhin.com
 
 " Setup
@@ -9,13 +8,7 @@ filetype off
 set backup " make backup file and leave it around
 set backupskip+=svn-commit.tmp,svn-commit.[0-9]*.tmp
 set directory=~/.vim/swap " where to put swap file
-if finddir(&directory) == ''
-    silent call mkdir(&directory, "p")
-end
 set backupdir=~/.vim/backups
-if finddir(&backupdir) == ''
-    silent call mkdir(&backupdir, "p")
-end
 
 let mapleader = ","
 
@@ -54,32 +47,24 @@ call vundle#end()
 filetype plugin indent on
 syntax on
 
-" init pathogen and build tags for doc folders
-" call pathogen#helptags()
-" call pathogen#incubate()
-
-
 " Buffer options
 set hidden                  " hide buffers when they are abandoned
 set autoread                " auto reload changed files
 set autowrite               " automatically save before commands like :next and :make
 
-" Djjkljsplay options
+" Display options
 set title                   " show file name in window title
 set visualbell              " mute error bell
 set listchars=tab:⇥\ ,trail:·,extends:⋯,precedes:⋯,eol:$,nbsp:~
 set linebreak               " break lines by words
 set nowrap                  " don't wrap lines
-set winminheight=0          " minimal window height
-set winminwidth=0           " minimal window width
-set lazyredraw              " lazy buffer redrawing " TODO: need fix?
+set lazyredraw              " lazy buffer redrawing
 set scrolloff=4             " min 4 symbols bellow cursor
 set sidescroll=4
 set sidescrolloff=8
-set nosplitbelow            " open new window bellow
-set number
+set number              " show line numbers
 set numberwidth=1       " Keep line numbers small if it's shown
-set laststatus=2
+set laststatus=2        " always show status line
 set nostartofline
 
 " Tab options
@@ -125,18 +110,14 @@ set undodir=/tmp/       " store undofiles in a tmp dir
 
 " Wildmenu
 set wildmenu                " use wildmenu ...
-set wildcharm=<TAB>         " autocomplete
-set wildignore=*.pyc        " ignore file pattern
-set cmdheight=2             " command line height 2
 
 " Folding
 set foldenable          " Enable code folding
 set foldmethod=indent   " Fold on marker
-set foldlevel=999       " High default so folds are shown to start
-set foldcolumn=0        " Don't show a fold column
+set foldlevel=10        " High default so folds are shown to start
 
 " Color options
-set background=light     " set background color to dark
+set background=dark     " set background color to dark
 colorscheme solarized
 
 " Edit
@@ -150,7 +131,7 @@ set confirm
 " highlight long lines
 set textwidth=80
 if exists('+colorcolumn')
-    hi ColorColumn ctermbg=7
+    "hi ColorColumn ctermbg=0
     set colorcolumn=+1
 else
     " au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
@@ -252,17 +233,6 @@ fun! rc#RunShellCommand(cmdline)
     1
 endfun
 
-" Open the fold if restoring cursor position
-fun! rc#OpenFoldOnRestore()
-    if exists("b:doopenfold")
-        execute "normal zv"
-        if(b:doopenfold > 1)
-            execute "+".1
-        endif
-        unlet b:doopenfold
-    endif
-endfun
-
 " Save buffer
 fun! rc#SaveBuffer()
     if filewritable(expand( '%' ))
@@ -324,47 +294,6 @@ endif
 
 " Plugins setup
 " ==============
-
-" Taglist
-let Tlist_Compact_Format          = 1   " Do not show help
-let Tlist_Enable_Fold_Column      = 0   " Don't Show the fold indicator column
-let Tlist_Exit_OnlyWindow         = 1   " If you are last kill your self
-let Tlist_GainFocus_On_ToggleOpen = 1   " Jump to taglist window to open
-let Tlist_Show_One_File           = 1   " Displaying tags for only one file
-let Tlist_Use_Right_Window        = 1   " Split to right side of the screen
-let Tlist_Use_SingleClick         = 1   " Single mouse click open tag
-let Tlist_WinWidth                = 30  " Taglist win width
-let Tlist_Display_Tag_Scope       = 1   " Show tag scope next to the tag name
-let tlist_xslt_settings           = 'xslt;m:match;n:name;a:apply;c:call'
-let tlist_javascript_settings     = 'javascript;s:string;f:function;a:array;o:object'
-let Tlist_Ctags_Cmd               = '/usr/local/Cellar/ctags/5.8/bin/ctags'
-
-" NERDCommenter
-let NERDSpaceDelims = 1
-
-" NERDTree
-let NERDTreeWinSize = 30
-" files/dirs to ignore in NERDTree (mostly the same as my svn ignores)
-let NERDTreeIgnore=[
-            \'\~$',
-            \'\.pt.cache$',
-            \'\.Python$',
-            \'\.svn$',
-            \'\.beam$',
-            \'\.pyc$',
-            \'\.pyo$',
-            \'\.mo$',
-            \'\.o$',
-            \'\.lo$',
-            \'\.la$',
-            \'\..*.rej$',
-            \'\.rej$',
-            \'\.\~lock.*#$',
-            \'\.AppleDouble$',
-            \'\.DS_Store$']
-
-" Enable extended matchit
-runtime macros/matchit.vim
 
 " CtrlP
 let g:ctrlp_custom_ignore = 'node_modules'
@@ -475,10 +404,6 @@ call rc#Toggle_option("<F7>", "wrap")      " Переключение перен
 " menu G.Move :Gmove<CR>
 " menu G.Log :Glog<CR>
 " menu G.Blame :Gblame<CR>
-
-" Close files
-call rc#Map_ex_cmd("<C-F10>", "qall")
-call rc#Map_ex_cmd("<S-F10>", "qall!")
 
 " Project settings
 " ================
