@@ -161,8 +161,8 @@ set ttyfast
 set mousehide
 
 " Autocomplete
-set complete=".,k,b"
-set completeopt=menu,longest
+" set complete=".,k,b"
+set completeopt=menu
 set infercase
 
 set whichwrap=b,s,<,>,[,],l,h
