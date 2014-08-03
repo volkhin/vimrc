@@ -1,9 +1,0 @@
-[submodule "bundle/vim-pathogen.git"]
-	path = bundle/vim-pathogen.git
-	url = https://github.com/tpope/vim-pathogen.git
-[submodule "bundle/vimerl.git"]
-	path = bundle/vimerl.git
-	url = https://github.com/jimenezrick/vimerl.git
-[submodule "bundle/vim-colors-solarized.git"]
-	path = bundle/vim-colors-solarized.git
-	url = git://github.com/altercation/vim-colors-solarized.git
