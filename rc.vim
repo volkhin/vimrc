@@ -1,14 +1,10 @@
 " Artem Volkhin, http://volkhin.com
 
-" Setup
-" ======
+" Basic setup, Vundle {{{
+" ===================
 
 set nocompatible " enable vim features
 filetype off
-set backup " make backup file and leave it around
-set backupskip+=svn-commit.tmp,svn-commit.[0-9]*.tmp
-set directory=~/.vim/swap " where to put swap file
-set backupdir=~/.vim/backups
 
 let mapleader = ","
 
@@ -20,9 +16,7 @@ Bundle 'gmarik/vundle'
 Bundle 'volkhin/vim-colors-solarized'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
-Bundle 'vim-scripts/taglist.vim'
 Bundle 'jcfaria/Vim-R-plugin'
-Bundle 'jlanzarotta/bufexplorer'
 Bundle 'klen/python-mode'
 Bundle 'kien/ctrlp.vim'
 Bundle 'kchmck/vim-coffee-script'
@@ -33,10 +27,17 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'fatih/vim-go'
 Bundle 'Shougo/neosnippet.vim'
 Bundle 'Shougo/neosnippet-snippets'
+Bundle 'majutsushi/tagbar'
+Bundle "rking/ag.vim"
+Bundle 'mustache/vim-mustache-handlebars'
+Bundle 'wavded/vim-stylus'
+Bundle 'Shougo/neocomplete.vim'
 
+" Bundle 'vim-scripts/taglist.vim'
+" Bundle 'Valloric/YouCompleteMe'
+" Bundle 'jlanzarotta/bufexplorer'
 " Bundle 'scrooloose/syntastic'
 " Bundle 'Lokaltog/vim-powerline'
-" Bundle 'Shougo/neocomplete.vim'
 " Bundle 'tpope/vim-haml'
 " Bundle 'alfredodeza/chapa.vim'
 " Bundle 'msanders/snipmate.vim'
@@ -46,6 +47,17 @@ Bundle 'Shougo/neosnippet-snippets'
 call vundle#end()
 filetype plugin indent on
 syntax on
+
+" }}}
+
+" General settings {{{
+" ================
+
+" set up backups folders
+set backup " make backup file and leave it around
+set backupskip+=svn-commit.tmp,svn-commit.[0-9]*.tmp
+set directory=~/.vim/swap " where to put swap file
+set backupdir=~/.vim/backups
 
 " Buffer options
 set hidden                  " hide buffers when they are abandoned
@@ -151,8 +163,9 @@ set whichwrap=b,s,<,>,[,],l,h
 set modelines=1
 
 set ttimeoutlen=50
+" }}}
 
-" Functions
+" Functions {{{
 " ==========
 
 " Keymap highlighter
@@ -164,19 +177,6 @@ set ttimeoutlen=50
 " endif
 " endfun
 
-" Key bind helper
-fun! rc#Map_ex_cmd(key, cmd)
-    execute "nmap ".a:key." " . ":".a:cmd."<CR>"
-    execute "cmap ".a:key." " . "<C-C>:".a:cmd."<CR>"
-    execute "imap ".a:key." " . "<C-O>:".a:cmd."<CR>"
-    execute "vmap ".a:key." " . "<Esc>:".a:cmd."<CR>gv"
-endfun
-
-" Option switcher helper
-fun! rc#Toggle_option(key, opt)
-    call rc#Map_ex_cmd(a:key, "set ".a:opt."! ".a:opt."?")
-endfun
-
 " Omni and dict completition
 fun! rc#AddWrapper()
     if exists('&omnifunc') && &omnifunc != ''
@@ -184,6 +184,11 @@ fun! rc#AddWrapper()
     else
         return "\<C-N>"
     endif
+endfun
+
+fun! rc#Search()
+    let word = input("Search for: ", expand("<cword>"))
+    execute ':Ag '.word
 endfun
 
 " Recursive vimgrep
@@ -244,9 +249,9 @@ endfun
 fun! AdjustWindowHeight(minheight, maxheight)
     exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfun
+" }}}
 
-
-" Autocommands
+" Autocommands {{{
 " =============
 
 if has("autocmd")
@@ -281,22 +286,31 @@ if has("autocmd")
         au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
         au FileType go nmap <leader>r <Plug>(go-run)
         au FileType go nmap <leader>b <Plug>(go-build)
+        au FileType go nmap <leader>s <Plug>(go-implements)
+        au FileType go nmap <leader>e <Plug>(go-rename)
+        au FileType go nmap <leader>c <Plug>(go-coverage)
+        au FileType go nmap <leader>B <Plug>(go-install)
         au FileType go nmap <leader>t <Plug>(go-test)
-        au FileType go nmap <leader>r <Plug>(go-run)
-        au FileType go nmap <leader>b <Plug>(go-build)
-        au FileType go nmap <leader>t <Plug>(go-test)
+        au FileType go nmap <leader>v <Plug>(go-vet)
+        au FileType go nmap <leader>V <Plug>(go-lint)
         au FileType go nmap <Leader>ds <Plug>(go-def-split)
         au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
         au FileType go nmap <Leader>dt <Plug>(go-def-tab)
     augroup END
 endif
+" }}}
 
-
-" Plugins setup
+" Plugins setup {{{
 " ==============
+
+" Neocomplete
+let g:neocomplete#enable_at_startup = 1
+" let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#enable_ignore_case = 0
 
 " CtrlP
 let g:ctrlp_custom_ignore = 'node_modules'
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 " Snipmate
 " let snippets_dir = substitute(globpath(&rtp, 'snippets/'), "\n", ',', 'g')
@@ -304,22 +318,6 @@ let snippets_dir = "~/.vim/snippets"
 
 " Markdown
 let g:vim_markdown_initial_foldlevel=10
-
-" Hot keys
-" ==========
-
-" Insert mode
-" ------------
-
-" Omni and dict completition on space
-inoremap <Nul> <C-R>=rc#AddWrapper()<CR>
-inoremap <A-Space> <C-R>=rc#AddWrapper()<CR>
-
-" Neosnippets
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
 imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
@@ -336,16 +334,45 @@ endif
 
 " vim-go
 let g:go_snippet_engine = "neosnippet"
+let g:go_fmt_command = "goimports"
+let g:go_highlight_methods = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_structs = 1
 
-" Normal mode
-" ------------
+let g:NERDSpaceDelims = 1
+
+let g:gitgutter_max_signs = 1000
+
+" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+" if executable('ag')
+  " Use Ag over Grep
+  " set grepprg=ag\ --vimgrep
+  " set grepprg=ag\ --nogroup\ --nocolor\ --column
+
+" endif
+" }}}
+
+let g:pymode = 1
+let g:pymode_warnings = 1
+let g:pymode_lint_checkers = ['pep8', 'mccabe']
+" let g:pymode_python = 'python3'
+
+" Hot keys {{{
+" ==========
+
+" Omni and dict completition on space
+inoremap <Nul> <C-R>=rc#AddWrapper()<CR>
+inoremap <A-Space> <C-R>=rc#AddWrapper()<CR>
+
+" Neosnippets
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " Nice scrolling if line wrap
 noremap j gj
 noremap k gk
-
-" Split line in current cursor position
-" map     <S-O>       i<CR><ESC>
 
 " Drop hightlight search result
 noremap <leader><space> :nohls<CR>
@@ -355,65 +382,59 @@ noremap <space> za
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
 
-" Select all
-map vA ggVG
+" Navigation
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
 
 " Close cwindow
-nnoremap <silent> ,ll :ccl<CR>
+nnoremap <silent> <leader>ll :ccl<CR>
 
 " Quickfix fast navigation
-nnoremap <silent> ,nn :cwindow<CR>:cn<CR>
-nnoremap <silent> ,pp :cwindow<CR>:cp<CR>
+nnoremap <silent> <leader>nn :cwindow<CR>:cn<CR>
+nnoremap <silent> <leader>pp :cwindow<CR>:cp<CR>
 
 " Make
-nnoremap <silent> ,mm :!make<CR>
-
-" Buffer commands
-noremap <silent> ,bp :bp<CR>
-noremap <silent> ,bn :bn<CR>
-noremap <silent> ,bw :w<CR>
-noremap <silent> ,bd :bd<CR>
-noremap <silent> ,ls :ls<CR>
+nnoremap <silent> <leader>mm :!make<CR>
 
 " Delete all buffers
-nmap <silent> ,da :exec "1," . bufnr('$') . "bd"<cr>
+nmap <silent> <leader>da :exec "1," . bufnr('$') . "bd"<cr>
 
-" Search the current file for the word under the cursor and display matches
-nmap <silent> ,gw :call rc#RGrep()<CR>
+" Search
+nmap <silent> <leader>gw :call rc#RGrep()<CR>
+nmap <leader>a :call rc#Search()<CR>
+nmap <C-b> :CtrlPMRU<CR>
+" nmap <C-b> :CtrlPBuffer<CR>
 
 " Open new tab
-nmap <leader>tt <esc>:tabnew<cr>
+"nmap <leader>tt <esc>:tabnew<cr>
 
-" NERDTree keys
-call rc#Map_ex_cmd("<F2>", "BufExplorer")
-call rc#Map_ex_cmd("<F3>", "NERDTreeToggle")
 nnoremap <silent> <leader>f :NERDTreeFind<CR>
+nnoremap <silent> <leader>F :NERDTreeFocus<CR>
+nnoremap <silent> <leader>x :NERDTreeToggle<CR>
+nnoremap <silent> <leader>X :TagbarOpenAutoClose<CR>
 
-" call rc#Map_ex_cmd("<F2>", "cw")
-call rc#Map_ex_cmd("<F4>", "TlistToggle")
-call rc#Toggle_option("<F6>", "list")      " Переключение подсветки невидимых символов
-call rc#Toggle_option("<F7>", "wrap")      " Переключение переноса слов
+"call rc#Map_ex_cmd("<F2>", "BufExplorer")
+"call rc#Map_ex_cmd("<F3>", "NERDTreeToggle")
+"call rc#Map_ex_cmd("<F2>", "cw")
+"call rc#Map_ex_cmd("<F4>", "TlistToggle")
+"call rc#Toggle_option("<F6>", "list")      " Invisible chars
+"call rc#Toggle_option("<F7>", "wrap")      " Toggle word wrapping
 
-" Git fugitive menu
-" map <F9> :emenu G.<TAB>
-" menu G.Status :Gstatus<CR>
-" menu G.Diff :Gdiff<CR>
-" menu G.Commit :Gcommit %<CR>
-" menu G.Checkout :Gread<CR>
-" menu G.Remove :Gremove<CR>
-" menu G.Move :Gmove<CR>
-" menu G.Log :Glog<CR>
-" menu G.Blame :Gblame<CR>
+" in case you forgot to sudo
+cnoremap w!! %!sudo tee > /dev/null %
+" }}}
 
-" Project settings
+" Project settings {{{
 " ================
 
 if !exists('s:loaded_my_vimrc')
-    " auto load .vim/.vimrc from current directory
-    " exe 'silent! source '.getcwd().'/.vim/.vimrc'
-    " exe 'silent! source '.getcwd().'/.vimrc'
+    " auto load .vimrc.local from current directory
+     exe 'silent! source '.getcwd().'/.vimrc.local'
     let s:loaded_my_vimrc = 1
 endif
-
+" }}}
 
 set secure  " must be written at the last.  see :help 'secure'.
+" vim: foldmethod=marker
