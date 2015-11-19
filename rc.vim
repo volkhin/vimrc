@@ -32,6 +32,7 @@ Bundle "rking/ag.vim"
 Bundle 'mustache/vim-mustache-handlebars'
 Bundle 'wavded/vim-stylus'
 Bundle 'Shougo/neocomplete.vim'
+Bundle 'chase/vim-ansible-yaml'
 
 " Bundle 'vim-scripts/taglist.vim'
 " Bundle 'Valloric/YouCompleteMe'
@@ -130,6 +131,7 @@ set foldlevel=10        " High default so folds are shown to start
 
 " Color options
 set background=dark     " set background color to dark
+" set background=light
 colorscheme solarized
 
 " Edit
