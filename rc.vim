@@ -154,6 +154,7 @@ endif
 set t_Co=256
 set ttyfast
 set mousehide
+set mouse=a
 
 " Autocomplete
 " set complete=".,k,b"
