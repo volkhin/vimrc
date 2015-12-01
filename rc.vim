@@ -131,7 +131,6 @@ set foldlevel=10        " High default so folds are shown to start
 
 " Color options
 set background=dark     " set background color to dark
-" set background=light
 colorscheme solarized
 
 " Edit
@@ -240,6 +239,8 @@ fun! rc#RunShellCommand(cmdline)
     silent execute '$read !'. expanded_cmdline
     1
 endfun
+
+command! ReloadVimrc source ~/.vimrc
 
 " Save buffer
 fun! rc#SaveBuffer()
@@ -392,7 +393,7 @@ noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 
 " Close cwindow
-nnoremap <silent> <leader>ll :ccl<CR>
+nnoremap <silent> <leader>ll :ccl<CR>:lcl<CR>
 
 " Quickfix fast navigation
 nnoremap <silent> <leader>nn :cwindow<CR>:cn<CR>
