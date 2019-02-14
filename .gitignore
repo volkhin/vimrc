@@ -1,8 +1,9 @@
 *.pyc
 *.session
 tags
-backups
+backups/*
 .netrwhist
 sessions/
 swap/*
+undo/*
 !**/.gitkeep
