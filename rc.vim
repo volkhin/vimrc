@@ -1,311 +1,334 @@
-" Artem Volkhin, http://volkhin.com
+" Artem Volkhin, artem@volkhin.com
 
-" Basic setup, Vundle {{{
-" ===================
-
+" Vundle {{{
 set nocompatible " enable vim features
+
+" set runtimepath^=$HOME/.vim/bundle/fb-admin
+" set runtimepath+=$HOME/.vim/bundle/fb-admin/after
+source $HOME/.vim/bundle/fb-admin/biggrep.vim
+source $HOME/.vim/bundle/fb-admin/fbvim.vim
+
 filetype off
-
-let mapleader = ","
-
-" init Vundle
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/vundle.vim
 call vundle#begin()
 
-Bundle 'gmarik/vundle'
-Bundle 'volkhin/vim-colors-solarized'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'scrooloose/nerdtree'
-Bundle 'jcfaria/Vim-R-plugin'
-Bundle 'klen/python-mode'
-Bundle 'kien/ctrlp.vim'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'plasticboy/vim-markdown'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'bling/vim-airline'
-Bundle 'tpope/vim-fugitive'
-Bundle 'fatih/vim-go'
-Bundle 'Shougo/neosnippet.vim'
-Bundle 'Shougo/neosnippet-snippets'
-Bundle 'majutsushi/tagbar'
-Bundle "rking/ag.vim"
-Bundle 'mustache/vim-mustache-handlebars'
-Bundle 'wavded/vim-stylus'
-Bundle 'Shougo/neocomplete.vim'
-Bundle 'chase/vim-ansible-yaml'
+Plugin 'Shougo/unite.vim'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'chriskempson/base16-vim'
+Plugin 'derekwyatt/vim-fswitch'
+Plugin 'elzr/vim-json'
+Plugin 'fb-admin', {'pinned': 1}
+Plugin 'haya14busa/incsearch.vim'
+Plugin 'jlfwong/vim-arcanist'
+Plugin 'jlfwong/vim-mercenary'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'majutsushi/tagbar'
+Plugin 'mhinz/vim-signify'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'pignacio/vim-yapf-format'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'rking/ag.vim'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-fugitive'
+Plugin 'valloric/YouCompleteMe'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vundleVim/vundle.vim'
+Plugin 'jlanzarotta/bufexplorer'
+Plugin 'FuzzyFinder', {'pinned': 1}
+Plugin 'L9', {'pinned': 1}
+Plugin 'volkhin/vim-colors-solarized'
+Plugin 'edkolev/promptline.vim'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'ambv/black'
 
-" Bundle 'vim-scripts/taglist.vim'
-" Bundle 'Valloric/YouCompleteMe'
-" Bundle 'jlanzarotta/bufexplorer'
-" Bundle 'scrooloose/syntastic'
-" Bundle 'Lokaltog/vim-powerline'
-" Bundle 'tpope/vim-haml'
-" Bundle 'alfredodeza/chapa.vim'
-" Bundle 'msanders/snipmate.vim'
-" Bundle 'xolox/vim-misc'
-" Bundle 'xolox/vim-session'
+" not used anymore
+
+" Plugin 'fatih/vim-go'
+" Plugin 'Shougo/neocomplete.vim'
+" Plugin 'Shougo/neosnippet-snippets'
+" Plugin 'Shougo/neosnippet.vim'
+" Plugin 'chase/vim-ansible-yaml'
+" Plugin 'ctrlpvim/ctrlp.vim'
+" Plugin 'edkolev/tmuxline.vim'
+" Plugin 'jcfaria/Vim-R-plugin'
+" Plugin 'klen/python-mode'
+" Plugin 'ludovicchabant/vim-lawrencium'
+" Plugin 'mileszs/ack.vim'
+" Plugin 'mustache/vim-mustache-handlebars'
+" Plugin 'scrooloose/nerdtree'
+" Plugin 'tpope/vim-dispatch'
+" Plugin 'wavded/vim-stylus'
 
 call vundle#end()
 filetype plugin indent on
 syntax on
+" }}}
+" Backup and swap files {{{
+
+set backup " make backup file and leave it around
+set backupdir=~/.vim/backups//
+set backupskip+=svn-commit.tmp,svn-commit.[0-9]*.tmp
+set swapfile
+set directory=~/.vim/swap//
+set undofile " enable persistent undo
+set undodir=~/.vim/undo// " store undofiles in a tmp dir
+set history=400 " history length
+set viminfo+=h " save history
 
 " }}}
+" Sessions {{{
 
-" General settings {{{
-" ================
+set ssop-=blank " dont save blank window
+set ssop-=options " dont save options
 
-" set up backups folders
-set backup " make backup file and leave it around
-set backupskip+=svn-commit.tmp,svn-commit.[0-9]*.tmp
-set directory=~/.vim/swap " where to put swap file
-set backupdir=~/.vim/backups
+" }}}
+" Buffer options {{{
 
-" Buffer options
-set hidden                  " hide buffers when they are abandoned
-set autoread                " auto reload changed files
-set autowrite               " automatically save before commands like :next and :make
+set hidden " hide buffers when they are abandoned
+set autoread " auto reload changed files
+set autowrite " automatically save before commands like :next and :make
 
-" Display options
-set title                   " show file name in window title
-set visualbell              " mute error bell
+" }}}
+" Display options {{{
+
+" set noerrorbells " no bells in terminal
+set cmdheight=1
+set laststatus=2 " always show status line
+set lazyredraw " lazy buffer redrawing
+set linebreak " break lines by words
 set listchars=tab:⇥\ ,trail:·,extends:⋯,precedes:⋯,eol:$,nbsp:~
-set linebreak               " break lines by words
-set nowrap                  " don't wrap lines
-set lazyredraw              " lazy buffer redrawing
-set scrolloff=4             " min 4 symbols bellow cursor
+set matchpairs+=<:> " Make < and > match as well
+set matchtime=3 " Show matching brackets for only 0.3 seconds ! NEED cpoptions+=m
+set nolist " hide tabs and EOL chars
+set nostartofline
+set nowrap " don't wrap lines
+set number " show line numbers
+set numberwidth=1 " Keep line numbers small if it's shown
+set ruler " show cursor position
+set scrolloff=4 " min symbols bellow cursor
+set showcmd " show normal mode commands as they are entered
+set showmatch " flash matching delimiters
+set showmode " show editing mode in status (-- INSERT --)
 set sidescroll=4
 set sidescrolloff=8
-set number              " show line numbers
-set numberwidth=1       " Keep line numbers small if it's shown
-set laststatus=2        " always show status line
-set nostartofline
+set title " show file name in window title
+set visualbell " mute error bell
 
-" Tab options
-set autoindent              " copy indent from previous line
-set smartindent             " enable nice indent
-set expandtab               " tab with spaces
-set smarttab                " isdent using shiftwidth"
-set shiftwidth=4            " number of spaces to use for each step of indent
-set softtabstop=4           " tab like 4 spaces
-set tabstop=4
-set shiftround              " drop unused spaces
+" }}}
+" Tabs abd spaces {{{
 
-" Backup and swap files
-set history=400             " history length
-set viminfo+=h              " save history
-set ssop-=blank             " dont save blank window
-set ssop-=options           " dont save options
+set autoindent " copy indent from previous line
+set smartindent " enable nice indent
+set smarttab " isdent using shiftwidth"
+set shiftwidth=2 " two spaces per indent
+set tabstop=2 " number of spaces per tab in display
+set softtabstop=2 " number of spaces per tab when inserting
+set expandtab " substitute spaces for tabs
+set shiftround " drop unused spaces
 
-" Search options
-set hlsearch                " Highlight search results
-set ignorecase              " Ignore case in search patterns
-set smartcase               " Override the 'ignorecase' option if the search pattern contains upper case characters
-set incsearch               " While typing a search command, show where the pattern
+" }}}
+" Search options {{{
 
-" Matching characters
-set showmatch               " Show matching brackets
-set matchpairs+=<:>         " Make < and > match as well
-set matchtime=3             " Show matching brackets for only 0.3 seconds ! NEED cpoptions+=m
+set hlsearch " Highlight search results
+set ignorecase " Ignore case in search patterns
+set smartcase " Override the 'ignorecase' option if the search pattern contains upper case characters
+set incsearch " While typing a search command, show where the pattern
 
-" Localization
-set langmenu=none            " Always use english menu
-set keymap=russian-jcukenwin " Переключение раскладок клавиатуры по <C-^>
-set iminsert=0               " Раскладка по умолчанию - английская
-set imsearch=0               " Раскладка по умолчанию при поиске - английская
-set spelllang=en,ru          " Языки для проверки правописания
+" }}}
+" Localization {{{
+
+set langmenu=none " Always use english menu
+set keymap=russian-jcukenwin
+set iminsert=0
+set imsearch=0
+set spelllang=en,ru
 set encoding=utf-8 nobomb
 set fileencodings=utf-8,cp1251,koi8-r,cp866
 set termencoding=utf-8
 
-" Undo
-set undofile            " enable persistent undo
-set undodir=/tmp/       " store undofiles in a tmp dir
+" }}}
+" Folding {{{
 
-" Wildmenu
-set wildmenu                " use wildmenu ...
+set foldenable " Enable code folding
+set foldmethod=indent " Fold on marker
+set foldnestmax=10
+set foldlevelstart=10 " 0 - hide all, 10/10 - unfold everything
 
-" Folding
-set foldenable          " Enable code folding
-set foldmethod=indent   " Fold on marker
-set foldlevel=10        " High default so folds are shown to start
+" }}}
+" Color options {{{
 
-" Color options
-set background=dark     " set background color to dark
+set background=dark
+let base16colorspace=256
 colorscheme solarized
+" colorscheme base16-default-dark
+set t_Co=256
 
-" Edit
-set backspace=indent,eol,start " Allow backspace to remove indents, newlines and old tex"
-" set clipboard+=unnamed      " enable x-clipboard
-set virtualedit=all         " on virtualedit for all mode
+" }}}
+" Highlight long lines {{{
 
-set shortmess=atToOI
-set confirm
-
-" highlight long lines
 set textwidth=80
 if exists('+colorcolumn')
-    "hi ColorColumn ctermbg=0
+    hi ColorColumn term=reverse
     set colorcolumn=+1
-else
-    " au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 endif
 
-set t_Co=256
+" }}}
+" Misc {{{
+
+set backspace=indent,eol,start " backspace removes indents, newlines and old tex
+set wildmenu
+" set clipboard+=unnamed " enable x-clipboard
+set virtualedit=all " on virtualedit for all mode
+set tags=tags;/ " search up the directory tree for tags
+set shortmess=atToOIW
+set confirm
+
 set ttyfast
-set mousehide
+" set mousehide
 set mouse=a
+if &term =~ '^screen'
+  " tmux knows the extended mouse mode
+  set ttymouse=xterm2
+endif
 
-" Autocomplete
 " set complete=".,k,b"
-set completeopt=menu
+set completeopt=menu,preview
 set infercase
-
 set whichwrap=b,s,<,>,[,],l,h
-
-set modelines=1
-
 set ttimeoutlen=50
+
 " }}}
 
 " Functions {{{
-" ==========
-
-" Keymap highlighter
-" fun! rc#KeyMapHighlight()
-" if &iminsert == 0
-" hi StatusLine ctermbg=DarkBlue guibg=DarkBlue
-" else
-" hi StatusLine ctermbg=DarkRed guibg=DarkRed
-" endif
-" endfun
-
-" Omni and dict completition
-fun! rc#AddWrapper()
-    if exists('&omnifunc') && &omnifunc != ''
-        return "\<C-X>\<C-o>\<C-p>"
-    else
-        return "\<C-N>"
-    endif
-endfun
 
 fun! rc#Search()
     let word = input("Search for: ", expand("<cword>"))
     execute ':Ag '.word
 endfun
 
-" Recursive vimgrep
-fun! rc#RGrep()
-    let pattern = input("Search for pattern: ", expand("<cword>"))
-    if pattern == ""
-        return
-    endif
-
-    let cwd = getcwd()
-    let startdir = input("Start searching from directory: ", cwd, "dir")
-    if startdir == ""
-        return
-    endif
-
-    let filepattern = input("Search in files matching pattern: ", "*.*")
-    if filepattern == ""
-        return
-    endif
-
-    execute 'noautocmd vimgrep /'.pattern.'/gj '.startdir.'/**/'.filepattern | copen
-endfun
-
-" Shell command with buffer output
-command! -complete=shellcmd -nargs=+ Shell call rc#RunShellCommand(<q-args>)
-fun! rc#RunShellCommand(cmdline)
-    let isfirst = 1
-    let words = []
-    for word in split(a:cmdline)
-        if isfirst
-            let isfirst = 0  " don't change first word (shell command)
-        else
-            if word[0] =~ '\v[%#<]'
-                let word = expand(word)
-            endif
-            let word = shellescape(word, 1)
-        endif
-        call add(words, word)
-    endfor
-    let expanded_cmdline = join(words)
-    botright new
-    setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap
-    call setline(1, 'You entered:  ' . a:cmdline)
-    call setline(2, 'Expanded to:  ' . expanded_cmdline)
-    call append(line('$'), substitute(getline(2), '.', '=', 'g'))
-    silent execute '$read !'. expanded_cmdline
-    1
-endfun
-
-command! ReloadVimrc source ~/.vimrc
-
-" Save buffer
-fun! rc#SaveBuffer()
-    if filewritable(expand( '%' ))
-        exe "w"
-    endif
-endfun
-
 " Auto cwindow height
 fun! AdjustWindowHeight(minheight, maxheight)
     exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfun
-" }}}
 
+" Print link for opening
+function! Open()
+  " let f = expand( "%:f" )
+  " let @* = substitute(f, ".*/fbcode", "https://phabricator.intern.facebook.com/diffusion/FBS/browse/master/fbcode/", "g") . "$" . line('.') . "?view=highlighted"
+  echo expand('%:p:s?.*/fbcode/?https://phabricator.fb.com/diffusion/FBCODE/browse/master/?:s?.*/configerator/?blamec ?:s?.*/configerator-hg/?blamec ?') . '%24' . line('.')
+endfunction
+command! -nargs=* Open call Open()
+
+command! FZFfbcode call fzf#run({
+\  'source':  'find ~/fbcode/{fblearner/flow/projects/dper,fblearner/flow/projects/dper3,caffe2/caffe2/} | sed "s/^\/home\/volkhin\/fbcode\///"',
+\  'sink':    'e',
+\  'options': '-m -x +s',
+\  'down':    '40%'})
+
+command! FZFMru call fzf#run({
+\  'source':  oldfiles,
+\  'sink':    'e',
+\  'options': '-m -x +s',
+\  'down':    '40%'})
+
+command! ShowTrailingSpaces /\S\zs\s\+$
+
+command! CloseHiddenBuffers call s:CloseHiddenBuffers()
+function! s:CloseHiddenBuffers()
+  let open_buffers = []
+
+  for i in range(tabpagenr('$'))
+    call extend(open_buffers, tabpagebuflist(i + 1))
+  endfor
+
+  for num in range(1, bufnr("$") + 1)
+    if buflisted(num) && index(open_buffers, num) == -1
+      exec "bdelete ".num
+    endif
+  endfor
+endfunction
+
+" }}}
 " Autocommands {{{
-" =============
 
 if has("autocmd")
+    " augroup updateFile
+      " au!
+      " au BufEnter * checktime
+    " augroup END
+
+    augroup custom_fswitch
+      au!
+      au BufEnter *.cc let b:fswitchdst  = 'h,hpp'
+      au BufEnter *.h let b:fswitchdst  = 'cpp,cc,c'
+    augroup END
+
     augroup vimrcEx
         au!
 
         " Auto reload vim settins
-        au! bufwritepost rc.vim source ~/.vimrc
-
-        " Highlight insert mode
-        au InsertEnter * set cursorline
-        au InsertLeave * set nocursorline " FIXME: works with delay
-
-        " New file templates
-        "au BufNewFile *.* 0r $HOME/.vim/templates/%:e.tpl " TODO: what is %:e ?
-        au BufNewFile *.py 0r $HOME/.vim/templates/py.tpl
+        " au BufWritePost rc.vim echo "reloaded settings from ~/.vimrc"
+        " au BufWritePost rc.vim source ~/.vimrc
 
         " Restore cursor position
-        au BufReadPost * if line("'\"") <= line("$") | exe line("'\"") | endif
+        " au BufReadPost * if line("'\"") <= line("$") | exe line("'\"") | endif
 
         " Save current open file when window focus is lost
-        au FocusLost * silent! :wa
+        " au FocusLost * silent! :wa
 
-        " cwindow height
+        " quickfix and location list height
         au FileType qf call AdjustWindowHeight(3, 6)
+        au FileType ll call AdjustWindowHeight(3, 6)
     augroup END
 
-    augroup vimGo
-        au FileType go nmap <Leader>i <Plug>(go-info)
-        au FileType go nmap <Leader>gd <Plug>(go-doc)
-        au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-        au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
-        au FileType go nmap <leader>r <Plug>(go-run)
-        au FileType go nmap <leader>b <Plug>(go-build)
-        au FileType go nmap <leader>s <Plug>(go-implements)
-        au FileType go nmap <leader>e <Plug>(go-rename)
-        au FileType go nmap <leader>c <Plug>(go-coverage)
-        au FileType go nmap <leader>B <Plug>(go-install)
-        au FileType go nmap <leader>t <Plug>(go-test)
-        au FileType go nmap <leader>v <Plug>(go-vet)
-        au FileType go nmap <leader>V <Plug>(go-lint)
-        au FileType go nmap <Leader>ds <Plug>(go-def-split)
-        au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-        au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+    augroup fbgrep
+      au!
+      au BufEnter *.php map <C-\> :TBGW<CR>
+      au BufEnter *.py map <C-\> :FBGW<CR>
+      au BufEnter *.cpp map <C-\> :FBGW<CR>
+      au BufEnter *.cc map <C-\> :FBGW<CR>
+      au BufEnter *.h map <C-\> :FBGW<CR>
+      au BufEnter *.cinc map <C-\> :CBGW<CR>
+    augroup END
+
+    augroup highlightActiveWindow
+      au!
+      au WinEnter * set cursorline
+      au WinLeave * set nocursorline
+    augroup END
+
+    augroup fb_filetypedetect
+      au!
+      au BufRead,BufNewFile *.cabal  setfiletype cabal
+      au BufRead,BufNewFile *.hsc    setfiletype haskell
+      au BufRead,BufNewFile *.phpt   setfiletype php
+
+      au BufRead,BufNewFile *.thrift setfiletype thrift
+
+      au BufRead,BufNewFile *.txt    setfiletype text
+      au BufRead,BufNewFile README   setfiletype text
+
+      " au BufRead,BufNewFile BUCK       setfiletype python
+      " au BufRead,BufNewFile TARGETS    setfiletype python
+
+      " au BufRead,BufNewFile *.smcprops setfiletype python
+      " au BufRead,BufNewFile *.cconf    setfiletype python
+      " au BufRead,BufNewFile *.mcconf   setfiletype python
+      " au BufRead,BufNewFile *.cinc     setfiletype python
+      " au BufRead,BufNewFile *.ctest    setfiletype python
+      " au BufRead,BufNewFile *.tw       setfiletype python
+      " au BufRead,BufNewFile *.thrift-cvalidator   setfiletype python
     augroup END
 endif
-" }}}
 
+" }}}
 " Plugins setup {{{
-" ==============
 
 " Neocomplete
 let g:neocomplete#enable_at_startup = 1
@@ -313,8 +336,14 @@ let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_ignore_case = 0
 
 " CtrlP
-let g:ctrlp_custom_ignore = 'node_modules'
+let g:ctrlp_custom_ignore = '(node_modules|_build|buck-out)'
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_working_path_mode = ''
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_root = ''
+
+" LogiPat
+let g:loaded_logipat = 1 " disable :ELP command which shadows :Explore
 
 " Snipmate
 " let snippets_dir = substitute(globpath(&rtp, 'snippets/'), "\n", ',', 'g')
@@ -323,68 +352,190 @@ let snippets_dir = "~/.vim/snippets"
 " Markdown
 let g:vim_markdown_initial_foldlevel=10
 
+" Syntasctic
+let g:syntastic_python_checkers=['flake8']
+" let g:syntastic_python_checkers=['pyflakes']"
+let g:syntastic_python_python_exec = '/usr/local/fbcode/gcc-4.9-glibc-2.20-fb/bin/python2.7'
+if &ft != 'php'
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_auto_loc_list=1
+  let g:syntastic_check_on_open = 0
+  let g:syntastic_check_on_wq = 1
+  let g:syntastic_quiet_messages = { "type": "style" }
+endif
+let g:syntastic_mode_map = {
+      \ 'passive_filetypes': ["java", "cpp", "php", "lua", "text"]
+      \ }
+
+let g:syntastic_lua_checkers = ["luac", "flychecklint"]
+let g:syntastic_aggregate_errors = 1
+
 " SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
+" imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" \ "\<Plug>(neosnippet_expand_or_jump)"
+" \: pumvisible() ? "\<C-n>" : "\<TAB>"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" \ "\<Plug>(neosnippet_expand_or_jump)"
+" \: "\<TAB>"
+
+imap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " For snippet_complete marker.
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
 
+" yapf
+let g:yapf_format_yapf_location = '/home/volkhin/fbcode/third-party2/yapf/0.10.0/gcc-4.9-glibc-2.20-fb/cf40c91/lib/python/'
+
 " vim-go
-let g:go_snippet_engine = "neosnippet"
+" let g:go_snippet_engine = "neosnippet"
 let g:go_fmt_command = "goimports"
 let g:go_highlight_methods = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_structs = 1
 
+" Unite
+call unite#custom#source('file,file/new,buffer,file_rec',
+      \ 'matchers', 'matcher_fuzzy')
+
+" NERDCommenter
+let g:NERDCreateDefaultMappings = 0
 let g:NERDSpaceDelims = 1
+map <leader>cc <Plug>NERDCommenterComment
+map <leader>cu <Plug>NERDCommenterUncomment
+map <leader>ci <Plug>NERDCommenterInvert
 
 let g:gitgutter_max_signs = 1000
 
-" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-" if executable('ag')
-  " Use Ag over Grep
-  " set grepprg=ag\ --vimgrep
-  " set grepprg=ag\ --nogroup\ --nocolor\ --column
-
+" airline
+" if !exists('g:airline_symbols')
+  " let g:airline_symbols = {}
 " endif
-" }}}
 
-let g:pymode = 1
-let g:pymode_warnings = 1
-let g:pymode_lint_checkers = ['pep8', 'mccabe']
+" let g:airline_left_sep = ' ' " ''
+" let g:airline_left_alt_sep = ' ' " ''
+" let g:airline_right_sep = ' ' " ''
+" let g:airline_right_alt_sep = ' ' " ''
+" let g:airline_symbols.branch = ' ' " ''
+" let g:airline_symbols.crypt = '🔒'
+" let g:airline_symbols.readonly = ' ' " ''
+" let g:airline_symbols.linenr = ' ' " ''
+" let g:airline_symbols.paste = 'ρ'
+" let g:airline_symbols.spell = 'Ꞩ'
+" let g:airline_symbols.notexists = '∄'
+" let g:airline_symbols.whitespace = 'Ξ'
+
+let g:airline_skip_empty_sections = 0
+
+let g:airline_mode_map = {
+    \ '__' : '-',
+    \ 'n'  : 'N',
+    \ 'i'  : 'I',
+    \ 'R'  : 'R',
+    \ 'c'  : 'C',
+    \ 'v'  : 'V',
+    \ 'V'  : 'V',
+    \ '' : 'V',
+    \ 's'  : 'S',
+    \ 'S'  : 'S',
+    \ '' : 'S',
+    \ }
+" let g:airline#extensions#default#layout = [
+    " \ [ 'a', 'b', 'c' ],
+    " \ [ 'z', 'error', 'warning' ]
+    " \ ]
+" let g:airline_section_z = "%n% %#__accent_bold#%{g:airline_symbols.linenr}%#__accent_bold#%l%#__restore__#%#__restore__#:%v"
+let g:airline_section_x = ""
+let g:airline_section_y = ""
+let g:airline#extensions#ycm#enabled = 1
+let g:airline#extensions#whitespace#enabled = 1
+let g:airline#extensions#hunks#enabled = 0
+
+let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#show_tab_nr = 1
+let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#show_splits = 0
+let g:airline#extensions#tabline#show_tab_type = 0
+let g:airline#extensions#tabline#show_buffers = 0
+
+" Promptline
+let g:promptline_theme = 'airline'
+      " \'c' : [ promptline#slices#vcs_branch(), "$(_dotfiles_scm_info)" ],
+let g:promptline_preset = {
+      \'a': [ promptline#slices#host(), promptline#slices#user() ],
+      \'b': [ promptline#slices#cwd() ],
+      \'c' : [ "$(_dotfiles_scm_info)" ],
+      \'z': [ '\t' ],
+      \'warn' : [ promptline#slices#last_exit_code() ]}
+
+" let g:pymode = 1
+" let g:pymode_warnings = 1
+" let g:pymode_lint_checkers = ['pep8', 'mccabe']
 " let g:pymode_python = 'python3'
 
-" Hot keys {{{
-" ==========
+" YouCompleteMe
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_min_num_identifier_candidate_chars = 4
+let g:ycm_show_diagnostics_ui = 1
+" let g:ycm_enable_diagnostic_signs = 0
+let g:ycm_error_symbol = 'x'
+let g:ycm_warning_symbol = '!'
+let g:ycm_server_keep_logfiles = 1
+let g:ycm_server_log_level = 'debug'
+let g:ycm_confirm_extra_conf = 0
+" let g:ycm_global_ycm_extra_conf = '/home/volkhin/fbcode/.ycm_extra_conf.py'
+let g:ycm_extra_conf_globlist = ['/data/users/volkhin/fbcode/*']
+let g:ycm_open_loclist_on_ycm_diags = 1
+let g:ycm_always_populate_location_list = 1
 
-" Omni and dict completition on space
-inoremap <Nul> <C-R>=rc#AddWrapper()<CR>
-inoremap <A-Space> <C-R>=rc#AddWrapper()<CR>
+" YCM must use the same Python version it's linked against
+let g:ycm_path_to_python_interpreter = '/data/users/volkhin/fbsource/fbcode/third-party-buck/gcc-5-glibc-2.23/build/python/2.7/bin/python2.7'
+" Default ycm_extra_conf.py for fbcode
+let g:ycm_global_ycm_extra_conf = '/home/volkhin/.vim/bundle/YouCompleteMe/ycm_extra_conf_fbcode.py'
+
+let g:fuf_timeFormat = ''
+
+" }}}
+" Hotkeys {{{
+
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+nmap <leader>- <Plug>AirlineSelectPrevTab
+nmap <leader>= <Plug>AirlineSelectNextTab
+
+map <leader>tt <esc>:tabnew<CR>
+
+" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+if executable('ag')
+ " Use Ag over Grep
+ set grepprg=ag\ --vimgrep
+ set grepprg=ag\ --nogroup\ --nocolor\ --column
+endif
+
+nnoremap j gj
+nnoremap k gk
 
 " Neosnippets
 " Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" Nice scrolling if line wrap
-noremap j gj
-noremap k gk
+" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " Drop hightlight search result
 noremap <leader><space> :nohls<CR>
 noremap <space> za
-
-" Fast scrool
-nnoremap <C-e> 3<C-e>
-nnoremap <C-y> 3<C-y>
 
 " Navigation
 noremap <C-h> <C-w>h
@@ -392,53 +543,60 @@ noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 
-" Close cwindow
+" Quickfix window
 nnoremap <silent> <leader>ll :ccl<CR>:lcl<CR>
-
-" Quickfix fast navigation
 nnoremap <silent> <leader>nn :cwindow<CR>:cn<CR>
 nnoremap <silent> <leader>pp :cwindow<CR>:cp<CR>
-
-" Make
-nnoremap <silent> <leader>mm :!make<CR>
 
 " Delete all buffers
 nmap <silent> <leader>da :exec "1," . bufnr('$') . "bd"<cr>
 
 " Search
-nmap <silent> <leader>gw :call rc#RGrep()<CR>
 nmap <leader>a :call rc#Search()<CR>
-nmap <C-b> :CtrlPMRU<CR>
+" nmap <C-b> :History<CR>
+" nmap <C-b> :CtrlPMRU<CR>
+nmap <C-b> :BufExplorer<CR>
+" nmap <C-b> :Unite buffer<CR>
+" nmap <C-b> :FufBuffer<CR>
+" nmap <C-b> :FZFMru<CR>
+nmap <C-p> :FZFfbcode<CR>
+" nnoremap <C-p> :exe ':CtrlP '.g:ctrlp_root.'<CR>'
 " nmap <C-b> :CtrlPBuffer<CR>
 
-" Open new tab
-"nmap <leader>tt <esc>:tabnew<cr>
+" Incsearch
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
+" Sessions
+map <leader>ss <ESC>:mksession! ~/.vim/session<CR>
+map <leader>sl <ESC>:source ~/.vim/session<CR>
 
 nnoremap <silent> <leader>f :NERDTreeFind<CR>
 nnoremap <silent> <leader>F :NERDTreeFocus<CR>
 nnoremap <silent> <leader>x :NERDTreeToggle<CR>
 nnoremap <silent> <leader>X :TagbarOpenAutoClose<CR>
-
-"call rc#Map_ex_cmd("<F2>", "BufExplorer")
-"call rc#Map_ex_cmd("<F3>", "NERDTreeToggle")
-"call rc#Map_ex_cmd("<F2>", "cw")
-"call rc#Map_ex_cmd("<F4>", "TlistToggle")
-"call rc#Toggle_option("<F6>", "list")      " Invisible chars
-"call rc#Toggle_option("<F7>", "wrap")      " Toggle word wrapping
+nnoremap <silent> <leader>e :Explore<CR>
 
 " in case you forgot to sudo
 cnoremap w!! %!sudo tee > /dev/null %
+
+"
+nnoremap <leader>y :YcmForceCompileAndDiagnostics<CR>
+nnoremap <leader>Y :YcmDiags<CR>
+nnoremap <leader>u :SyntasticCheck<CR>
+nnoremap <silent> <leader>pg :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <silent> <leader>pd :YcmCompleter GoToDefinition<CR>
+nnoremap <silent> <leader>pc :YcmCompleter GoToDeclaration<CR>
+nnoremap <silent> <leader>i :YcmCompleter GetType<CR>
+nnoremap <silent> <leader>I :YcmCompleter GetDoc<CR>
+nnoremap <silent> gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+map <Leader>k :pyf ~/.vim/bundle/fb-admin/clang-format.py<CR>
+map <Leader>K :%pyf ~/.vim/bundle/fb-admin/clang-format.py<CR>
+nnoremap <silent> <Leader>q :FSHere<CR>
+
 " }}}
 
-" Project settings {{{
-" ================
-
-if !exists('s:loaded_my_vimrc')
-    " auto load .vimrc.local from current directory
-     exe 'silent! source '.getcwd().'/.vimrc.local'
-    let s:loaded_my_vimrc = 1
-endif
-" }}}
-
-set secure  " must be written at the last.  see :help 'secure'.
-" vim: foldmethod=marker
+set secure " must be written at the last
+" vim: fdm=marker
