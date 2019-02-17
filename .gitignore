@@ -6,4 +6,5 @@ backups/*
 sessions/
 swap/*
 undo/*
+bundle/*
 !**/.gitkeep
