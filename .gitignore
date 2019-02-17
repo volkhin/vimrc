@@ -1,10 +1,11 @@
 *.pyc
 *.session
 tags
-backups/*
+/backups/*
 .netrwhist
-sessions/
-swap/*
-undo/*
-bundle/*
+/sessions/
+/swap/*
+/undo/*
+/bundle/*
+!/bundle/fb-admin/
 !**/.gitkeep
