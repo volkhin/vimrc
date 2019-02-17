@@ -24,7 +24,6 @@ Plugin 'edkolev/promptline.vim'
 Plugin 'elzr/vim-json'
 Plugin 'fb-admin', {'pinned': 1}
 Plugin 'haya14busa/incsearch.vim'
-Plugin 'jcfaria/Vim-R-plugin'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'jlfwong/vim-arcanist'
 Plugin 'jlfwong/vim-mercenary'
@@ -49,7 +48,6 @@ Plugin 'vundleVim/vundle.vim'
 " not used anymore
 
 " Plugin 'Lokaltog/vim-powerline'
-" Plugin 'Shougo/neocomplete.vim'
 " Plugin 'Shougo/neosnippet-snippets'
 " Plugin 'Shougo/neosnippet.vim'
 " Plugin 'Valloric/YouCompleteMe'
