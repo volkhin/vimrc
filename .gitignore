@@ -1,5 +1,6 @@
 *.pyc
 *.session
+session
 tags
 /backups/*
 .netrw*
