@@ -490,7 +490,7 @@ let g:promptline_preset = {
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_min_num_identifier_candidate_chars = 4
 let g:ycm_show_diagnostics_ui = 1
-" let g:ycm_enable_diagnostic_signs = 0
+let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_error_symbol = 'x'
 let g:ycm_warning_symbol = '!'
 let g:ycm_server_keep_logfiles = 1
@@ -500,11 +500,9 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_extra_conf_globlist = ['/data/users/volkhin/fbcode/*']
 let g:ycm_open_loclist_on_ycm_diags = 1
 let g:ycm_always_populate_location_list = 1
-
 " YCM must use the same Python version it's linked against
-let g:ycm_path_to_python_interpreter = '/data/users/volkhin/fbsource/fbcode/third-party-buck/gcc-5-glibc-2.23/build/python/2.7/bin/python2.7'
-" Default ycm_extra_conf.py for fbcode
-let g:ycm_global_ycm_extra_conf = '/home/volkhin/.vim/bundle/YouCompleteMe/ycm_extra_conf_fbcode.py'
+" let g:ycm_path_to_python_interpreter = '/data/users/volkhin/fbsource/fbcode/third-party-buck/gcc-5-glibc-2.23/build/python/2.7/bin/python2.7'
+let g:ycm_path_to_python_interpreter = '/usr/local/bin/python3'
 
 let g:fuf_timeFormat = ''
 
