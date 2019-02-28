@@ -44,6 +44,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'volkhin/vim-colors-solarized'
 Plugin 'vundleVim/vundle.vim'
+Plugin 'rhysd/vim-clang-format'
 
 " not used anymore
 
@@ -497,7 +498,8 @@ let g:ycm_server_keep_logfiles = 1
 let g:ycm_server_log_level = 'debug'
 let g:ycm_confirm_extra_conf = 0
 " let g:ycm_global_ycm_extra_conf = '/home/volkhin/fbcode/.ycm_extra_conf.py'
-let g:ycm_extra_conf_globlist = ['/data/users/volkhin/fbcode/*']
+let g:ycm_use_clangd = "Never"
+let g:ycm_extra_conf_globlist = ['~/*', '/data/users/volkhin/fbcode/*']
 let g:ycm_open_loclist_on_ycm_diags = 1
 let g:ycm_always_populate_location_list = 1
 " YCM must use the same Python version it's linked against
@@ -598,8 +600,8 @@ nnoremap <silent> <leader>i :YcmCompleter GetType<CR>
 nnoremap <silent> <leader>I :YcmCompleter GetDoc<CR>
 nnoremap <silent> gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-map <Leader>k :pyf ~/.vim/bundle/fb-admin/clang-format.py<CR>
-map <Leader>K :%pyf ~/.vim/bundle/fb-admin/clang-format.py<CR>
+map <Leader>k :pyxfile ~/.vim/bundle/fb-admin/clang-format.py<CR>
+map <Leader>K :%pyxfile ~/.vim/bundle/fb-admin/clang-format.py<CR>
 nnoremap <silent> <Leader>q :FSHere<CR>
 
 " }}}
