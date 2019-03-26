@@ -173,10 +173,10 @@ set foldlevelstart=10 " 0 - hide all, 10/10 - unfold everything
 " Color options {{{
 
 set background=dark
-let base16colorspace=256
-colorscheme solarized
-" colorscheme base16-default-dark
-set t_Co=256
+" let base16colorspace=256
+" colorscheme solarized
+colorscheme base16-default-dark
+" set t_Co=256
 
 " }}}
 " Highlight long lines {{{
