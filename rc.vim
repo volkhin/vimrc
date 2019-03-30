@@ -459,6 +459,7 @@ let g:airline_section_x = ""
 let g:airline_section_y = ""
 let g:airline#extensions#ycm#enabled = 1
 let g:airline#extensions#whitespace#enabled = 1
+let g:airline#extensions#keymap#enabled = 0
 let g:airline#extensions#hunks#enabled = 0
 
 let g:airline#extensions#tabline#enabled = 1
@@ -473,7 +474,7 @@ let g:airline#extensions#tabline#show_tab_type = 0
 let g:airline#extensions#tabline#show_buffers = 0
 
 " Promptline
-let g:promptline_theme = 'airline'
+" let g:promptline_theme = 'base16_default'
       " \'c' : [ promptline#slices#vcs_branch(), "$(_dotfiles_scm_info)" ],
 let g:promptline_preset = {
       \'a': [ promptline#slices#host(), promptline#slices#user() ],
