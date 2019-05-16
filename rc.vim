@@ -246,6 +246,33 @@ command! FZFMru call fzf#run({
 \  'options': '-m -x +s',
 \  'down':    '40%'})
 
+
+let repo_path = system('hg root')
+let repo_initial = 'f'
+if repo_path =~# 'configerator'
+    let repo_initial = 'c'
+elseif repo_path =~# 'www'
+    let repo_initial = 't'
+elseif repo_path =~# 'fbcode'
+    let repo_initial = 'f'
+endif
+
+command! -nargs=* BGS
+  \ call fzf#vim#grep(
+  \   g:repo_initial . 'bgs --color=on --ignore-case '.<q-args>.
+  \ '| sed "s,^[^/]*/,,"' .
+  \ '| sed "s#^#$(hg root)/#g"', 1,
+  \   fzf#vim#with_preview('right:35%')
+  \ )
+command! -nargs=* BGF
+  \ call fzf#vim#grep(
+  \ g:repo_initial . 'bgf --color=on --ignore-case '.<q-args>.
+  \ '| sed "s,^[^/]*/,,"' .
+  \ '| sed "s#^#$(hg root)/#g"', 1,
+  \ fzf#vim#with_preview('right:35%'),
+  \ )
+nmap <leader>s :BGS expand("<cword>")<CR>
+
 command! ShowTrailingSpaces /\S\zs\s\+$
 
 command! CloseHiddenBuffers call s:CloseHiddenBuffers()
