@@ -7,6 +7,7 @@ set nocompatible " enable vim features
 " set runtimepath+=$HOME/.vim/bundle/fb-admin/after
 source $HOME/.vim/bundle/fb-admin/biggrep.vim
 source $HOME/.vim/bundle/fb-admin/fbvim.vim
+source $HOME/.vim/bundle/fb-admin/open.vim
 
 filetype off
 set rtp+=~/.vim/bundle/vundle.vim
@@ -225,14 +226,6 @@ endfun
 fun! AdjustWindowHeight(minheight, maxheight)
     exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfun
-
-" Print link for opening
-function! Open()
-  " let f = expand( "%:f" )
-  " let @* = substitute(f, ".*/fbcode", "https://phabricator.intern.facebook.com/diffusion/FBS/browse/master/fbcode/", "g") . "$" . line('.') . "?view=highlighted"
-  echo expand('%:p:s?.*/fbcode/?https://phabricator.fb.com/diffusion/FBCODE/browse/master/?:s?.*/configerator/?blamec ?:s?.*/configerator-hg/?blamec ?') . '%24' . line('.')
-endfunction
-command! -nargs=* Open call Open()
 
 command! FZFfbcode call fzf#run({
 \  'source':  'find ~/fbcode/{fblearner/flow/projects/dper,fblearner/flow/projects/dper3,caffe2/caffe2/} | sed "s/^\/home\/volkhin\/fbcode\///"',
