@@ -47,6 +47,17 @@ Plugin 'volkhin/vim-colors-solarized'
 Plugin 'vundleVim/vundle.vim'
 Plugin 'rhysd/vim-clang-format'
 
+" LSP
+Plugin 'prabirshrestha/async.vim'
+Plugin 'prabirshrestha/vim-lsp'
+Plugin 'pdavydov108/vim-lsp-cquery'
+" Plugin 'prabirshrestha/asyncomplete.vim'
+" Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+
+" Autocompletion
+" Plugin 'ncm2/ncm2'
+" Plugin 'roxma/nvim-yarp'
+
 " not used anymore
 
 " Plugin 'Lokaltog/vim-powerline'
@@ -81,9 +92,9 @@ syntax on
 " }}}
 " Backup and swap files {{{
 
-set backup " make backup file and leave it around
-set backupdir=~/.vim/backups//
-set backupskip+=svn-commit.tmp,svn-commit.[0-9]*.tmp
+set nobackup
+" set backupdir=~/.vim/backups//
+" set backupskip+=svn-commit.tmp,svn-commit.[0-9]*.tmp
 set swapfile
 set directory=~/.vim/swap//
 set undofile " enable persistent undo
@@ -205,6 +216,9 @@ set mouse=a
 if &term =~ '^screen'
   " tmux knows the extended mouse mode
   set ttymouse=xterm2
+endif
+if has('mouse_sgr')
+  set ttymouse=sgr
 endif
 
 " set complete=".,k,b"
@@ -384,7 +398,7 @@ let g:vim_markdown_initial_foldlevel=10
 " Syntasctic
 let g:syntastic_python_checkers=['flake8']
 " let g:syntastic_python_checkers=['pyflakes']"
-let g:syntastic_python_python_exec = '/usr/local/fbcode/gcc-4.9-glibc-2.20-fb/bin/python2.7'
+let g:syntastic_python_python_exec = '/usr/local/fbcode/gcc-5-glibc-2.23/bin/python3.6'
 if &ft != 'php'
   let g:syntastic_always_populate_loc_list = 1
   let g:syntastic_auto_loc_list=1
@@ -530,6 +544,7 @@ let g:ycm_path_to_python_interpreter = '/usr/local/bin/python3'
 let g:fuf_timeFormat = ''
 
 " }}}
+
 " Hotkeys {{{
 
 nmap <leader>1 <Plug>AirlineSelectTab1
@@ -601,9 +616,6 @@ map g/ <Plug>(incsearch-stay)
 map <leader>ss <ESC>:mksession! ~/.vim/session<CR>
 map <leader>sl <ESC>:source ~/.vim/session<CR>
 
-nnoremap <silent> <leader>f :NERDTreeFind<CR>
-nnoremap <silent> <leader>F :NERDTreeFocus<CR>
-nnoremap <silent> <leader>x :NERDTreeToggle<CR>
 nnoremap <silent> <leader>X :TagbarOpenAutoClose<CR>
 nnoremap <silent> <leader>e :Explore<CR>
 
@@ -624,6 +636,149 @@ nnoremap <silent> gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 map <Leader>k :pyxfile ~/.vim/bundle/fb-admin/clang-format.py<CR>
 map <Leader>K :%pyxfile ~/.vim/bundle/fb-admin/clang-format.py<CR>
 nnoremap <silent> <Leader>q :FSHere<CR>
+
+" }}}
+
+" {{{ LSP
+" autocmd FileType qf setlocal wrap
+
+au User lsp_setup call lsp#register_server({
+  \   'name': 'hack',
+  \   'cmd': {server_info->[&shell, &shellcmdflag, 'hh lsp']},
+  \   'whitelist': ['php', 'hack'],
+  \ })
+
+au User lsp_setup call lsp#register_server({
+  \   'name': 'aurora-lint',
+  \   'cmd': {server_info->[
+  \     &shell,
+  \     &shellcmdflag,
+  \     'phps AuroraLanguageServerScriptController'
+  \   ]},
+  \   'whitelist': ['php', 'hack'],
+  \ })
+
+au User lsp_setup call lsp#register_server({
+  \   'name': 'flow',
+  \   'cmd': {server_info->[
+  \     &shell,
+  \     &shellcmdflag,
+  \     '/usr/local/bin/flow lsp --lazy-mode watchman'
+  \   ]},
+  \   'whitelist': ['javascript'],
+  \ })
+
+au User lsp_setup call lsp#register_server({
+  \   'name': 'js-lint',
+  \   'cmd': {server_info->[
+  \     &shell,
+  \     &shellcmdflag,
+  \     '/usr/local/fbpkg/nuclide/nuclide-node/latest/node-v8.9.3-linux-x64/bin/node /data/users/jsd115/fbsource/xplat/nuclide/build/atom/nuclide/pkg/fb-eslint-server/src/index-entry.js'
+  \   ]},
+  \   'whitelist': ['javascript'],
+  \ })
+  "\   'lint': v:true,
+
+au User lsp_setup call lsp#register_server({
+  \   'name': 'pyre',
+  \   'cmd': {server_info->[
+  \     &shell,
+  \     &shellcmdflag,
+  \     'pyre persistent'
+  \   ]},
+  \   'whitelist': ['python'],
+  \ })
+
+au User lsp_setup call lsp#register_server({
+  \ 'name': 'pyls',
+  \ 'cmd': {server_info->['bash', '-c',
+  \   '/data/users/$USER/fbsource/fbcode/experimental/gwicke/vim/fbcode_pyls_wrapper']},
+  \ 'whitelist': ['python'],
+  \ 'workspace_config': {
+  \   'pyls': { 'plugins': { 'pydocstyle': {' enabled': v:true}}}
+  \ },
+  \ "configurationSources": ["flake8"],
+  \ })
+
+au User lsp_setup call lsp#register_server({
+  \ 'name': 'cquery',
+  \ 'cmd': {server_info->['bash', '-c',
+  \   '/data/users/$USER/fbsource/fbcode/experimental/gwicke/vim/fbcode_cquery_wrapper' ]},
+  \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.buckconfig'))},
+  \ 'initialization_options': {
+  \   'cacheDirectory': '/tmp/cquery_cache',
+  \   'index': {
+  \     'blacklist': ['.*/buck-out/.*', '.*/third-party-buck/.*']
+  \   },
+  \   'completion': {
+  \     'includeBlacklist': ['.*/buck-out/.*', '.*/third-party-buck/.*'],
+  \     'enableSnippets': v:true,
+  \   },
+  \   'diagnostics': {
+  \     'blacklist': ['.*/buck-out/.*', '.*/third-party-buck/.*'],
+  \     'onParse': v:true,
+  \     'onType': v:true,
+  \   },
+  \   'resourceDirectory': '',
+  \   'discoverSystemIncludes': v:false,
+  \   'showDocumentLinksOnIncludes': v:false,
+  \   'disableInitialIndex': v:true,
+  \   'progressReportFrequencyMs': 500,
+  \   'clientVersion': 3,
+  \   'codeLens': {
+  \        'localVariables': v:false,
+  \   },
+  \ },
+  \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc', 'h'],
+  \ })
+
+let g:lsp_signs_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_diagnostics_enabled = 1
+
+highlight clear lspReference
+highlight lspReference ctermbg=235 guibg=#161616
+
+highlight clear LspErrorText
+highlight LspErrorText ctermfg=196 ctermbg=52 guifg=#ff0000 guibg=#330000	
+
+highlight clear LspWarningLine
+highlight clear LspWarningText
+highlight LspWarningText ctermfg=226 guifg=#ff0000 guibg=#333300 guifg=#ffbf00
+
+highlight clear LspInformationText
+highlight LspInformationText guibg=#000000
+
+let g:lsp_preview_keep_focus = 1
+
+function! SetLSPShortcuts()
+  set omnifunc=lsp#complete
+  " set shortmess+=c
+  " call ncm2#enable_for_buffer()
+  " set completeopt=noinsert,menuone,noselect
+  inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+  inoremap <silent><expr> <C-Space>
+    \ pumvisible() ? "\<C-n>" :
+    \ "<C-X><C-O>"
+
+  map <C-L> :LspHover<CR>
+  imap <C-L> <ESC>:LspHover<CR>i
+  map <C-K> :LspCodeAction<CR>
+  imap <C-K> <ESC>:LspCodeAction<CR>
+  map <C-S><C-]> :vsp <CR>:LspDefinition<CR>
+  nmap <C-S><C-]> :vsp <CR>:LspDefinition<CR>
+  map <C-]> :LspDefinition<CR>
+  nmap <C-]> :LspDefinition<CR>
+  map <C-P> :LspDocumentFormat<CR>
+  imap <C-P> <ESC>:LspDocumentFormat<CR>i
+  map <C-\> :LspReferences<CR>
+  map <C-E> :LspDocumentDiagnostics<CR>
+endfunction()
+
+" au FileType python,php,javascript,cpp call SetLSPShortcuts()
+"autocmd BufWritePost *.py,*.php,*.js,*.h,*.cpp call lsp#ui#vim#diagnostics#populate_quickfix()
+let g:hack#enable = 0  " Disable Hack plugin in favor of LSP
 
 " }}}
 
