@@ -570,8 +570,8 @@ if executable('ag')
  set grepprg=ag\ --nogroup\ --nocolor\ --column
 endif
 
-nnoremap j gj
-nnoremap k gk
+nnoremap <silent>j gj
+nnoremap <silent>k gk
 
 " Neosnippets
 " Plugin key-mappings.
