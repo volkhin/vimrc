@@ -17,7 +17,7 @@ Plugin 'Shougo/neocomplete.vim'
 Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'ambv/black'
+" Plugin 'ambv/black'
 Plugin 'chriskempson/base16-vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'derekwyatt/vim-fswitch'
@@ -229,7 +229,6 @@ set whichwrap=b,s,<,>,[,],l,h
 set ttimeoutlen=50
 
 " }}}
-
 " Functions {{{
 
 fun! rc#Search()
@@ -361,13 +360,13 @@ if has("autocmd")
       " au BufRead,BufNewFile BUCK       setfiletype python
       " au BufRead,BufNewFile TARGETS    setfiletype python
 
-      " au BufRead,BufNewFile *.smcprops setfiletype python
-      " au BufRead,BufNewFile *.cconf    setfiletype python
-      " au BufRead,BufNewFile *.mcconf   setfiletype python
-      " au BufRead,BufNewFile *.cinc     setfiletype python
-      " au BufRead,BufNewFile *.ctest    setfiletype python
-      " au BufRead,BufNewFile *.tw       setfiletype python
-      " au BufRead,BufNewFile *.thrift-cvalidator   setfiletype python
+      au BufRead,BufNewFile *.smcprops setfiletype python
+      au BufRead,BufNewFile *.cconf    setfiletype python
+      au BufRead,BufNewFile *.mcconf   setfiletype python
+      au BufRead,BufNewFile *.cinc     setfiletype python
+      au BufRead,BufNewFile *.ctest    setfiletype python
+      au BufRead,BufNewFile *.tw       setfiletype python
+      au BufRead,BufNewFile *.thrift-cvalidator   setfiletype python
     augroup END
 endif
 
@@ -546,8 +545,7 @@ let g:ycm_path_to_python_interpreter = '/usr/local/bin/python3'
 let g:fuf_timeFormat = ''
 
 " }}}
-
-" Hotkeys {{{
+" Hotkeys/shortcuts {{{
 
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
@@ -624,23 +622,26 @@ nnoremap <silent> <leader>e :Explore<CR>
 " in case you forgot to sudo
 cnoremap w!! %!sudo tee > /dev/null %
 
-"
-nnoremap <leader>y :YcmForceCompileAndDiagnostics<CR>
-nnoremap <leader>Y :YcmDiags<CR>
+" IDE
+" nnoremap <leader>y :YcmForceCompileAndDiagnostics<CR>
+" nnoremap <leader>Y :YcmDiags<CR>
 " nnoremap <leader>u :SyntasticCheck<CR>
-nnoremap <silent> <leader>pg :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <silent> <leader>pd :YcmCompleter GoToDefinition<CR>
-nnoremap <silent> <leader>pc :YcmCompleter GoToDeclaration<CR>
-nnoremap <silent> <leader>i :YcmCompleter GetType<CR>
-nnoremap <silent> <leader>I :YcmCompleter GetDoc<CR>
-nnoremap <silent> gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" nnoremap <silent><leader>pg :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" nnoremap <silent><leader>pd :YcmCompleter GoToDefinition<CR>
+" nnoremap <silent><leader>pc :YcmCompleter GoToDeclaration<CR>
+" nnoremap <silent><leader>i :YcmCompleter GetType<CR>
+" nnoremap <silent><leader>I :YcmCompleter GetDoc<CR>
+" nnoremap <silent>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+nmap <silent><leader>i <Plug>(ale_hover)
+nmap <silent>gd <Plug>(ale_go_to_definition)
 
 map <Leader>k :pyxfile ~/.vim/bundle/fb-admin/clang-format.py<CR>
 map <Leader>K :%pyxfile ~/.vim/bundle/fb-admin/clang-format.py<CR>
+
 nnoremap <silent> <Leader>q :FSHere<CR>
 
 " }}}
-
 " {{{ LSP
 " function! SetLSPShortcuts()
   " set omnifunc=lsp#complete
@@ -665,6 +666,7 @@ let g:ale_linters = { 'python': ['flake8', 'pyls'] }
 let g:ale_echo_msg_format = '[%linter%]% [code]% %s'
 let g:ale_python_flake8_executable = '/usr/local/bin/flake8-3'
 let g:ale_fix_on_save = 0
+imap <C-Space> <Plug>(ale_complete)
 
 let g:ale_fixers = {
       \    '*': ['remove_trailing_lines', 'trim_whitespace'],
