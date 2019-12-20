@@ -7,5 +7,4 @@ tags
 /sessions/
 /swap/*
 /undo/*
-!/bundle/fb-admin/
 !**/.gitkeep
