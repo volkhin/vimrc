@@ -185,11 +185,11 @@ set foldlevelstart=10 " 0 - hide all, 10/10 - unfold everything
 " }}}
 " Color options {{{
 
-set background=dark
 " let base16colorspace=256
+set background=dark
 " colorscheme solarized
 colorscheme base16-default-dark
-" set t_Co=256
+set t_Co=256
 
 " }}}
 " Highlight long lines {{{
@@ -491,7 +491,7 @@ let g:airline_mode_map = {
 " let g:airline_section_z = "%n% %#__accent_bold#%{g:airline_symbols.linenr}%#__accent_bold#%l%#__restore__#%#__restore__#:%v"
 let g:airline_section_x = ""
 let g:airline_section_y = ""
-let g:airline#extensions#ycm#enabled = 1
+let g:airline#extensions#ycm#enabled = 0
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#keymap#enabled = 0
 let g:airline#extensions#hunks#enabled = 0
@@ -524,6 +524,7 @@ let g:promptline_preset = {
 " let g:pymode_python = 'python3'
 
 " YouCompleteMe
+let g:enable_ycm_at_startup = 0
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_min_num_identifier_candidate_chars = 4
 let g:ycm_show_diagnostics_ui = 1
