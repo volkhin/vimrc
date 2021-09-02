@@ -33,7 +33,6 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'mhinz/vim-signify'
 Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'pignacio/vim-yapf-format'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
@@ -428,9 +427,6 @@ if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
 
-" yapf
-let g:yapf_format_yapf_location = '/home/volkhin/fbcode/third-party2/yapf/0.10.0/gcc-4.9-glibc-2.20-fb/cf40c91/lib/python/'
-
 " vim-go
 " let g:go_snippet_engine = "neosnippet"
 let g:go_fmt_command = "goimports"
@@ -659,8 +655,7 @@ nnoremap <silent> <Leader>q :FSHere<CR>
 let g:hack#enable = 0  " Disable Hack plugin in favor of LSP
 
 
-call ale#Set('python_pyls_executable',
-    \ expand('/data/users/$USER/fbsource/fbcode/experimental/gwicke/vim/fbcode_pyls_wrapper'))
+call ale#Set('python_pyls_executable', '/usr/local/bin/pyls-language-server')
 " let g:ale_hack_hack_executable = 'hh'
 let g:ale_linters_explicit = 1
 let g:ale_linters = { 'python': ['flake8', 'pyls'] }
