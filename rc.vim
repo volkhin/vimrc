@@ -19,7 +19,7 @@ Plugin 'Shougo/vimproc.vim'
 Plugin 'airblade/vim-gitgutter'
 " Plugin 'ambv/black'
 Plugin 'chriskempson/base16-vim'
-Plugin 'davidhalter/jedi-vim'
+" Plugin 'davidhalter/jedi-vim'
 Plugin 'derekwyatt/vim-fswitch'
 Plugin 'edkolev/promptline.vim'
 Plugin 'elzr/vim-json'
@@ -39,13 +39,13 @@ Plugin 'scrooloose/nerdcommenter'
 " Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-fugitive'
-Plugin 'valloric/YouCompleteMe'
+" Plugin 'valloric/YouCompleteMe'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'volkhin/vim-colors-solarized'
 Plugin 'vundleVim/vundle.vim'
 Plugin 'rhysd/vim-clang-format'
-Plugin 'w0rp/ale'
+" Plugin 'w0rp/ale'
 
 " LSP
 " Plugin 'prabirshrestha/async.vim'
@@ -186,8 +186,9 @@ set foldlevelstart=10 " 0 - hide all, 10/10 - unfold everything
 
 " let base16colorspace=256
 set background=dark
-" colorscheme solarized
-colorscheme base16-default-dark
+colorscheme solarized
+" colorscheme base16-default-dark
+" colorscheme default
 set t_Co=256
 
 " }}}
