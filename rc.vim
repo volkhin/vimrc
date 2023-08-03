@@ -5,9 +5,9 @@ set nocompatible " enable vim features
 
 " set runtimepath^=$HOME/.vim/bundle/fb-admin
 " set runtimepath+=$HOME/.vim/bundle/fb-admin/after
-source $HOME/.vim/bundle/fb-admin/biggrep.vim
-source $HOME/.vim/bundle/fb-admin/fbvim.vim
-source $HOME/.vim/bundle/fb-admin/open.vim
+" source $HOME/.vim/bundle/fb-admin/biggrep.vim
+" source $HOME/.vim/bundle/fb-admin/fbvim.vim
+" source $HOME/.vim/bundle/fb-admin/open.vim
 
 filetype off
 set rtp+=~/.vim/bundle/vundle.vim
@@ -118,7 +118,9 @@ set autowrite " automatically save before commands like :next and :make
 " }}}
 " Display options {{{
 
-" set noerrorbells " no bells in terminal
+set noerrorbells " no bells in terminal
+set novisualbell " mute error bell
+" set vb t_vb=[?5h$<100>[?5l
 set cmdheight=1
 set laststatus=2 " always show status line
 set lazyredraw " lazy buffer redrawing
@@ -139,7 +141,6 @@ set showmode " show editing mode in status (-- INSERT --)
 set sidescroll=4
 set sidescrolloff=8
 set title " show file name in window title
-set visualbell " mute error bell
 
 " }}}
 " Tabs abd spaces {{{
@@ -186,10 +187,10 @@ set foldlevelstart=10 " 0 - hide all, 10/10 - unfold everything
 
 " let base16colorspace=256
 set background=dark
-colorscheme solarized
+" colorscheme solarized
 " colorscheme base16-default-dark
-" colorscheme default
-set t_Co=256
+colorscheme default
+" set t_Co=256
 
 " }}}
 " Highlight long lines {{{
@@ -503,7 +504,7 @@ let g:airline#extensions#tabline#show_close_button = 0
 let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_tab_type = 0
 let g:airline#extensions#tabline#show_buffers = 0
-let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#ale#enabled = 0
 
 " Promptline
 " let g:promptline_theme = 'base16_default'
@@ -656,20 +657,21 @@ nnoremap <silent> <Leader>q :FSHere<CR>
 let g:hack#enable = 0  " Disable Hack plugin in favor of LSP
 
 
-call ale#Set('python_pyls_executable', '/usr/local/bin/pyls-language-server')
-" let g:ale_hack_hack_executable = 'hh'
-let g:ale_linters_explicit = 1
-let g:ale_linters = { 'python': ['flake8', 'pyls'] }
-let g:ale_echo_msg_format = '[%linter%]% [code]% %s'
-let g:ale_python_flake8_executable = '/usr/local/bin/flake8-3'
-let g:ale_fix_on_save = 0
-imap <C-Space> <Plug>(ale_complete)
+" Ale
+" call ale#Set('python_pyls_executable', '/usr/local/bin/pyls-language-server')
+" " let g:ale_hack_hack_executable = 'hh'
+" let g:ale_linters_explicit = 1
+" let g:ale_linters = { 'python': ['flake8', 'pyls'] }
+" let g:ale_echo_msg_format = '[%linter%]% [code]% %s'
+" let g:ale_python_flake8_executable = '/usr/local/bin/flake8-3'
+" let g:ale_fix_on_save = 0
+" imap <C-Space> <Plug>(ale_complete)
 
-let g:ale_fixers = {
-      \    '*': ['remove_trailing_lines', 'trim_whitespace'],
-      \    'python': ['isort', 'black'],
-      \    'hack': ['hackfmt'],
-      \}
+" let g:ale_fixers = {
+      " \    '*': ['remove_trailing_lines', 'trim_whitespace'],
+      " \    'python': ['isort', 'black'],
+      " \    'hack': ['hackfmt'],
+      " \}
 
 " }}}
 
